@@ -113,10 +113,10 @@ const injectTokens = (tokenResponse) => {
 
 export const login = (cachedTokenResponse) => {
   let tokenResponse = null;
-  let chainable = cy.visit("/");
+  let chainable;
 
   if (!cachedTokenResponse) {
-    chainable = chainable.request({
+    chainable = cy.request({
       url: authority + "/oauth2/v2.0/token",
       method: "POST",
       body: {
@@ -128,24 +128,21 @@ export const login = (cachedTokenResponse) => {
         password: password,
       },
       form: true,
-    });
-  } else {
-    chainable = chainable.then(() => {
-      return {
-        body: cachedTokenResponse,
-      };
-    });
-  }
-
-  chainable
+    })
     .then((response) => {
       injectTokens(response.body);
       tokenResponse = response.body;
     })
-    .reload()
+    .visit("/")
     .then(() => {
       return tokenResponse;
     });
+  } else {
+    chainable = cy.visit("/")
+      .then(() => {
+        return tokenResponse;
+      });
+  }
 
   return chainable;
 };
