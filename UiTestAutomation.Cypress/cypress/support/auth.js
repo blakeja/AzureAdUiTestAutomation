@@ -106,9 +106,9 @@ const injectTokens = (tokenResponse) => {
     apiScopes
   );
 
-  localStorage.setItem(accountKey, JSON.stringify(accountEntity));
-  localStorage.setItem(idTokenKey, JSON.stringify(idTokenEntity));
-  localStorage.setItem(accessTokenKey, JSON.stringify(accessTokenEntity));
+  sessionStorage.setItem(accountKey, JSON.stringify(accountEntity));
+  sessionStorage.setItem(idTokenKey, JSON.stringify(idTokenEntity));
+  sessionStorage.setItem(accessTokenKey, JSON.stringify(accessTokenEntity));
 };
 
 export const login = (cachedTokenResponse) => {
